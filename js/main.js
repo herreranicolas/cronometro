@@ -1,6 +1,7 @@
 let hora = 0;
 minutos = 0;
 segundos = 0;
+let intervalID;
 
 hora = verificarTiempo(hora);
 minutos = verificarTiempo(minutos);
@@ -10,7 +11,9 @@ let tiempo = document.getElementById("tiempo");
 btnComenzar = document.getElementById("btnComenzar");
 btnComenzar.addEventListener("click", comenzarCronometro);
 btnPausar = document.getElementById("btnPausar");
+btnPausar.addEventListener("click", pausarCronometro);
 btnResetear = document.getElementById("btnResetear");
+btnResetear.addEventListener("click", resetearCronometro);
 
 tiempo.innerHTML = `${hora}:${minutos}:${segundos}`;
 
@@ -22,7 +25,7 @@ function verificarTiempo(tiempo) {
 }
 
 function comenzarCronometro() {
-  setInterval(() => {
+  intervalID = setInterval(() => {
     if (segundos < 59) {
       segundos++;
       tiempo.innerHTML = `${verificarTiempo(hora)}:${verificarTiempo(
@@ -34,8 +37,8 @@ function comenzarCronometro() {
       tiempo.innerHTML = `${verificarTiempo(hora)}:${verificarTiempo(
         minutos
       )}:${verificarTiempo(segundos)}`;
-    } 
-    if(minutos > 59) {
+    }
+    if (minutos > 59) {
       minutos = 0;
       hora++;
       tiempo.innerHTML = `${verificarTiempo(hora)}:${verificarTiempo(
@@ -43,4 +46,22 @@ function comenzarCronometro() {
       )}:${verificarTiempo(segundos)}`;
     }
   }, 1000);
+  btnComenzar.classList.add("d-none")
+}
+
+function pausarCronometro() {
+  clearInterval(intervalID);
+  btnComenzar.classList.remove("d-none");
+}
+
+function resetearCronometro() {
+  let hora = 0;
+  minutos = 0;
+  segundos = 0;
+  tiempo.innerHTML = `${verificarTiempo(hora)}:${verificarTiempo(
+    minutos
+  )}:${verificarTiempo(segundos)}`;
+  clearInterval(intervalID);
+  intervalID = undefined;
+  btnComenzar.classList.remove("d-none");
 }
